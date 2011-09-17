@@ -1,0 +1,84 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# include<stdio.h>
+# include<stdlib.h>
+
+int length;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void printArr(int arr[])
+{
+  int i;
+  printf("\nElements in sorted order are as follwoing :- \n");
+  for(i=0;i<length;i++)
+    {
+      printf("%d\t",arr[i]);
+    }
+  printf("\n");
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void creatArr(int arr[])
+{
+  int i;
+
+  printf("\nEnter Length Of Arr : ");
+  scanf("%d",&length);
+
+  //  (*ptr) = (int*)malloc(sizeof(int)*length);
+
+  printf("\nEnter elements in sorted order :- \n");
+  for(i=0;i<length;i++)
+    {
+      scanf("%d",&arr[i]);
+    }
+  printArr(arr);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int binarySearch(int arr[])
+{
+  int mid,start=0,end=length-1,elementToBeSearched;
+
+  mid = ( start + end )/2;
+
+  printf("\nEnter element you want to search : ");
+  scanf("%d",&elementToBeSearched);
+
+  while( mid<= end )
+    {
+      if( arr[mid] > elementToBeSearched )
+	{
+	  end = mid;
+	  mid = ( start + end )/2;
+	}
+      else if( arr[mid] < elementToBeSearched )
+	{
+	  start = mid;
+	  mid = ( start + end )/2;
+	}
+
+      else 
+	{
+	  printf("Element Found At %d index \n",mid);
+	  return 1;
+	}
+    }
+      printf("\n Element not found \n");
+      return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int main()
+{
+  int arr[25];
+  creatArr(arr);
+  binarySearch(arr);
+  return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

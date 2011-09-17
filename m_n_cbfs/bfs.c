@@ -1,0 +1,206 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+
+char **ptr;
+int row, col ,count=0;
+
+struct tree
+{
+  int x_cord;
+  int y_cord;
+  struct tree *left;
+  struct tree *right;
+  struct tree *up;
+  struct tree *down;
+  struct tree *previous;
+}
+
+struct queue
+{
+  int x_cord;
+  int y_cord;
+  int direction;
+  struct queue *next;
+};
+
+//typedef struct queue 
+struct queue *front=NULL, *rear=NULL;
+
+
+int backtrack(void);
+int findCheese(int m, int n);
+
+
+int main(int argc,char *argv[])
+{
+  FILE *fp ;
+  int i,j, moi, moj, chei, chej;
+  int flagmouse=0 , flagches=0;
+  //**ptr;
+  fp=fopen(argv[1],"r");
+  
+  /*row and column dimensions calculated */
+  fscanf(fp,"%d%d",&row,&col);
+  
+  /*row and column size allocation */
+  ptr = (char **)malloc(sizeof(char *)*row);      
+  for (i=0;i<row;i++)
+    {
+      *(ptr+i) = (char *)malloc(sizeof(char)*col);           // col size allocation
+    }
+
+  /*scanning and printing Chars in grid */
+    for(i=0;i<row;i++)
+    {
+      fseek(fp,1,1);
+      for(j=0;j<col;j++)
+	{
+	  fscanf(fp,"%c",*(ptr+i)+j);
+          printf("%c",*(*(ptr+i)+j));
+	  if(*(*(ptr+i)+j)=='c')
+	    {
+	      //**ches=*(*ptr+i)+j;
+	      chei=i;
+	      chej=j;
+              flagches=1;
+	      //printf("ches  %d\t%d\n\n",i,j);   
+	    }
+          if(*(*(ptr+i)+j)=='m')
+             {
+	       // **mouse=*(*ptr+i)+j;
+	        moi=i;
+	        moj=j;
+	        flagmouse=1 ; 
+               //printf("mouse %d\t%d\n\n",i,j);
+	    }
+       	}
+       printf("\n");
+    }
+    
+    if (flagmouse==0 && flagches==0)
+      {
+	printf("Mouse and Cheese both Not Present :\n"); 
+      }
+    else if(flagmouse==0)
+      {
+	printf("Mouse Not Present :\n"); 
+      }
+    else if ( flagches==0)
+      {
+	printf("Chease Not Present :\n");
+      }
+    else 
+      {
+	printf("\nmouse %d\t%d\n\n",moi,moj);
+	printf("ches  %d\t%d\n\n",chei,chej);
+	//move(row, col, moi, moj, ptr);
+	dq(current_i,current_j);
+	findCheese(moi,moj);
+
+	/*	printf("(%d , %d ) -> ",moi,moj);
+	for(i=1;i<count;i++)
+	  {
+	    printf("(%d , %d ) -> ",path[i].mrow, path[i].mcol);
+	  }
+	  printf("Cheese Found . Hee Hee !!!\n\n");*/
+      }
+    return 0;
+}
+
+
+int findCheese();
+{
+  
+  ptr=dq();
+
+  if(ptr)
+    {
+      storeInTree(ptr);
+      if(ptr=='c')
+	printpath();
+      retrurn 1;
+
+      else
+	{
+	 *(*(ptr+current_i)+current_j)=='w';
+
+	 if(((current_j+1)< col) && *(*(ptr+current_i)+current_j)!='w')                                        // 1 for right direction
+	    nq(current_i,current_j+1,1);
+	
+	  if(((current_j-1)>=0) && *(*(ptr+current_i)+current_j)!='w')                                        // 0 for left direction
+	    nq(current_i,current_j-1,0);
+	  
+	  if(((current_i+1)< row) && *(*(ptr+current_i)+current_j)!='w')                                     // 2 for down direction
+	    nq(current_i+1,current_j,2);
+	  
+	  if(((current_i-1)>=0) && *(*(ptr+current_i)+current_j)!='w')                                     // 3 for up direction
+	    nq(current_i-1,current_j,3);
+
+	}
+
+      findCheese();
+    }
+  else
+    printf("No path exits \n");
+      return 0;
+}
+
+
+storeInTree(dqelm)
+{
+  struct tree *newtree;
+  newtree=(tree *)malloc(sizeof(tree));
+  newtree->x_cord=dqelm->x_cord;
+  newtree->y_cord=dqelm->y_cord;
+
+  switch(dqelm->direction){
+  case 0:
+    newtree->previous=travel;
+    travel->left=newtree;
+  case 1:
+     newtree->previous=travel;
+     travel->right=newtree;
+  case 2:
+    newtree->previous=travel;
+    travel->down=newtree;
+  case 3:
+    newtree->previous=travel;
+    travel->up=newtree;
+  }
+}
+
+printpath()
+{
+
+}
+
+int dq()
+{
+  struct queue *dqelm;
+  dqelm=front;
+  front = front -> next;
+  storeInTree(dqelm);
+  free(dqelm);
+  if(front==NULL)
+    {
+     return 0;
+    }
+  else
+    {
+      return 1;
+    }
+}
+
+nq(i,j,pos)
+{
+  struct queue *new;
+
+  new = (queue *)malloc(sizeof(queue));
+
+  new->x_cord=i;
+  new->y_cord=j;
+  new->direction=pos;
+  new->next=NULL;
+  rear=new;
+}

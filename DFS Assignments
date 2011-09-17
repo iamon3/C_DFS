@@ -1,0 +1,34 @@
+
+***********************DFS Assignments ****************************************************************************
+
+-- infix to postfix conversion using stack
+-- implement que using 2 stacks 
+-- effecient 3 stacks in single array .write push and pop operations for all stacks
+-- 8 queen problems
+**-- creating unique tree using given two traversals
+-- ----------------------------------------------------------------------------------------1st mid sem paper
+**-- Tower of Honai
+-- Write a function to traverse a binary tree in inorder but the function should be iterative
+**-- Write a function which takes a binary tree and changes it into postorder/preorder/inorder doubly linked list
+**--Write a function which takes a BST as argument and makes BST such that all numbers of new BST is negative of     the old BST.Protottype shud b BST* negative(BST*)
+--Write a function to sort a given doubly linked list using selection sort
+**-- Write a function which will take a binary tree and number and prints the root to node path such that sum of all the data in that path is equal to given number . It shud print NULL if no such path exists.
+--implement sizeof for variables only , using #define
+-- wrte a recursive function which will return determinant of give matrix . and Extend problem to find cofactor matrix.
+-- Write function to find least common ancestor in a given tree .
+## Practice more TREE recursion .
+
+*****************************************************************************************************************
+**-- check given graph has cycle or not
+**-- graph connected or not
+-- problem of Younges Tableau
+-- find 5th largest element of BST
+-- Merge two heaps to create single heap
+-- tree represented in 2d array . where a[i][j] == 1 if i is ancestor of j.else 0.You have to construct a tree from such an array.
+-- sort stack using one auxillary stack
+-- Tree is created in such a way that each leaf points to its next prev leaf like dll. You have to traverse that tree
+-- Write a routine tht prints 2-D array in spiral order
+-- find two numbers in bst whose sum is given number.
+-- To check that given binary tree is BST or not .
+-- To do iteratative inorder traversal of a binary tree without using stack .
+-- The Josephous problem .

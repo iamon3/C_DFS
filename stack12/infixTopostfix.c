@@ -1,0 +1,131 @@
+#include<stdio.h>
+
+char stack[10],postfix[10],infix[10],popedItem;
+int infixTop=0,postfixTop=0,stackTop=-1;
+
+int push(char item,char  bucket[],int *top);
+char pop(char bucket[], int *top);
+void toPostfix();
+
+int main()
+{
+  int length,i;
+  printf("Enter length of infix\n");
+  scanf("%d",&length);
+  printf("Enter elements in Infix one by one :\n");
+  for(infixTop=0;infixTop<length;infixTop++)
+    {
+      scanf(" %c",&infix[infixTop]);
+    }
+  push(')',infix ,&infixTop);
+  push('(',stack,&stackTop);
+  toPostfix();
+  
+  printf("\n postfix= %s\n", postfix);
+    for(i=0;i<postfixTop;i++)
+      { 
+        printf("%c\t",postfix[i]);
+      } 
+  
+  printf("\n");
+  return 0;
+}
+
+void toPostfix()
+{
+  int i;
+  postfixTop = -1;
+  printf("\n TOPOSTFIX.................");
+   for(i=0;((stackTop!=-1)&&(i<infixTop));i++)
+    {
+      printf("\n In for infix[%d] = %c",i,infix[i]);
+      if(infix[i]=='(')
+	  push(infix[i] ,stack ,&stackTop);
+
+      else if(infix[i]!='+' && infix[i]!='-' && infix[i]!='*' && infix[i]!='/')
+	{
+	  push(infix[i] , postfix ,&postfixTop);
+	  printf("\n In Not eq.\n");    
+	}
+
+      else if(infix[i]=='+' || infix[i]=='-' || infix[i]=='*' || infix[i]=='/')
+         {
+	  if(infix[i]=='/')	    {
+	      while((popedItem=pop(stack,&stackTop))=='/')
+		{
+		  //  stackTop-=1;
+		  push(popedItem,postfix,&postfixTop);
+		  // postfixTop+=1;
+		}
+	      push(popedItem,stack,&stackTop);
+	    }
+	  else
+	  if(infix[i]=='*')
+	    {
+	      printf("\t In - .. ");
+	      popedItem=pop(stack,&stackTop);
+	      while( popedItem=='/' || popedItem=='*')
+		{
+		  //stackTop-=1;
+		  pop(postfix, &postfixTop);
+		  // postfixTop -= 1;
+		  push(infix[i] ,stack ,&stackTop);
+		  //stackTop += 1;
+		  popedItem=pop(stack,&stackTop);
+		}
+	      push(popedItem,stack,&stackTop);
+	    }
+	  else	  if(infix[i] == '+')
+	    {
+	      printf("\t In + .. ");
+	      while((popedItem=pop(stack ,&stackTop))!='-')
+		{
+		  push(popedItem, postfix, &postfixTop);
+		}
+	      push(popedItem,stack,&stackTop);
+	    }
+	  else	  if(infix[i]=='-')
+	    {
+	      printf("\t In else .. ");
+	      while((popedItem = pop(stack ,&stackTop))!='(')
+		{
+		  //stackTop-=1;
+		  push(popedItem, postfix, &postfixTop);
+		  //postfixTop+=1;
+		}
+	      push(popedItem,stack,&stackTop);
+	    }
+        }
+      else if(infix[i]==')')
+	{ 
+	  while((popedItem=pop(stack ,&stackTop))!='(')
+	    {
+	      //	      stackTop-=1;
+	      push(popedItem, postfix ,&postfixTop);
+	      //postfixTop+=1;
+	    }
+	  push(popedItem,stack,&stackTop);
+	}
+    }
+}
+
+int push(char item, char bucket[], int *top)
+{
+  if(top==MAXSTK)
+    {printf("Overflow :\n"); return ;}
+  else
+    { 
+      *top += 1;
+      bucket[*top] = item ;  
+      return 0;
+    }
+}
+
+char pop(char bucket[], int *top)
+{
+  char item;
+  /*  if(top==0)
+    {printf("Underflow :\n");return ;}
+    else*/
+    { item = bucket[*top] ;*top-=1; return item;}
+}
