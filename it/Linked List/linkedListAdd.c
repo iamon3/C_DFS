@@ -1,15 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<math.h>
 
 ///////////////////////////////
 
-/* This code adds two (long numbers given as) linked lists */
-/* and return result linked list */
-
-/* This code is not giving required output. */
-/* Problem might be in other function like add, newNode  */
-/* Logically main linked list addition functions are correct. */
-/* So Debug and fix the bug. */
+/* Works Perfectly. Only trick here in recursion is to check current head, */
+/* lengths of two linked list. */
+/* There can be more efficient solution of without calculating length. */
+/* Will try some time.  */
 
 ///////////////////////////////
 
@@ -20,17 +18,20 @@ struct list{
 
 typedef struct list list;
  
-//////////// other functions ///////////////////
+///////////////////////////////
 
-void printList(list* head)
+int printList(list* head)
 {
+  int count = 0;
   printf("\n");
   while(head)
     {
+      count += 1;
       printf("%d  ->",head -> data);
       head = head -> next;
     }
   printf("NULL\n");
+  return count;
 }
 
 void prependNode(list** head,list** tail)
@@ -75,7 +76,7 @@ void creatLinkedList(list** head,list** tail)
     }
 }
 
-//////////// helper functions ///////////////////
+///////////////////////////////
 
 list* newNode(int data){
   list* new=NULL;
@@ -105,57 +106,49 @@ int add(int a, int b, list** r){
   return q;
 }
 
-void copy(list** r, list* l){
-  list *prev = NULL, *new = NULL;
-  while(l){
-    new = newNode(l -> data);
-    if(!(*r)){
-      *r = new;
-    }
-    else{
-      prev -> next = new;
-    }
-    prev = new;
-    new = NULL;
-    l = l -> next;
-  }
-}
-
 void appendNode(list** result, list* new){
   new -> next = *result;
   *result = new;
 }
 
-/////////////// Main Functions ///////////////////
+///////////////////////////////
 
-int addLists(list* h1, list* h2,list** r){
+int addLists(list* h1, list* h2,list** r, int diff){
   int carry=0;
   
   if(!h1 && !h2)return 0;
-  if(!h1 && h2) {copy(r,h2);return 0;}
-  if(h1 && !h2) {copy(r,h1);return 0;}
+  
+  if(diff >0){
+    carry = addLists(h1->next,h2,r,diff - 1);
+    carry = add(carry, h1 -> data, r);
+    return carry;
+  }
 
   if(!h1->next && !h2->next){
     carry = add(h1->data, h2->data,r);
    } 
-  else if(h1->next && !h2->next){
-    carry = addLists(h1->next,h2,r);
-    carry = add(carry, h1->data,r);
-   }
-  else if(!h1->next && h2->next){
-    carry = addLists(h1,h2->next,r);
-    carry = add(carry, h2->data,r);
+  else{
+    carry = addLists(h1->next,h2->next,r,diff);
+    carry = add(carry + h1->data, h2->data,r);
    } 
-  else{carry = addLists(h1->next,h2->next,r);} 
 
   return carry;
 }
 
-list* addLinkedList(list * head1,list* head2){
+void swap(list** h1, list** h2){
+  list* temp;
+  temp = (*h1);
+  *h1 = *h2;
+  *h2 = temp;
+}
+
+list* addLinkedList(list * head1,list* head2, int l1, int l2){
   list* result=NULL;
   int carry=0;
 
-  if( (carry = addLists(head1, head2,&result)) > 0){
+  if(l2 > l1){swap(&head1,&head2);}
+
+  if( (carry = addLists(head1, head2,&result, abs(l1-l2))) > 0){
     appendNode(&result, newNode(carry));
   }
   return result;  
@@ -166,18 +159,18 @@ list* addLinkedList(list * head1,list* head2){
 int main(){
   list *head1=NULL, *head2= NULL, *head3 = NULL;
   list *tail1, *tail2; 
-
+  int length1 = 0 , length2 = 0;
   printf("creat 1st linked list\n");
   creatLinkedList(&head1,&tail1);
   printf("creat 2nd linked list\n");
   creatLinkedList(&head2,&tail2);
 
   printf("Linked Lists you created are as \n");
-  printList(head1);
+  length1 = printList(head1);
   printf("\n");
-  printList(head2);
+  length2 = printList(head2);
    
-  head3 = addLinkedList(head1, head2);
+  head3 = addLinkedList(head1, head2, length1, length2);
   printf("After addition result linked lists => \n ");
   printList(head3);
 
