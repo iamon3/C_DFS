@@ -61,6 +61,39 @@ int partition(int arr[],int low,int high)
   return lastSmallElement;
 }
 
+/*
+ * This function places the element located at low index to it's pivote position
+ * and returns pivote position i.e. index in the array at which low index element is placed after executing pivote position logic.
+ * e.g.
+ * If arr = [2,1,6,5,4], then this function will place "2" at the 2nd position i.e. index 1 and will return the same.
+ * So after execution of this function, arr may be reorganized as 
+ * arr = [1,2,6,4,5]
+ */
+int partition1(int arr[],int low,int high){
+	
+	//Let's assume 1st element to be the pivote element
+	int pivotePosition = low;
+	int pivoteElm = arr[low];
+	
+	//So we have to find pivotePosition of the 1st element in the arr.
+	int i = low + 1;
+	
+	// Find the position of the 1st element in the array as Pivote.
+	while(i <= high){
+		if(arr[i] < pivoteElm){
+			pivotePosition += 1;
+			swap(arr, i, pivotePosition);
+		}
+		i++;
+	}
+	
+	// Finally we have found pivote position where the 1st element belongs to.
+	// So place it to the proper found pivote position.
+	swap(arr, low, pivotePosition);
+	
+	return pivotePosition;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void quickSort(int arr[],int low ,int high)
@@ -69,8 +102,7 @@ void quickSort(int arr[],int low ,int high)
 
   if(low < high)
     {
-      printf("Hi1\n");
-      pivotepos = partition(arr,low,high);
+      pivotepos = partition1(arr,low,high);
       quickSort(arr,low,pivotepos-1);
       quickSort(arr,pivotepos+1,high);
     }
