@@ -55,6 +55,47 @@ linkedList* iterativePartByPartReverseList( linkedList* head, int n)
   return head;
 }
 
+// This an alternate method for reversing k nodes of the linked list.
+linkedList* iterativePartByPartReverseList2( linkedList* head, int k){
+
+   linkedList  *prev = NULL; // previous node
+   linkedList  *curr = head; // current node
+   linkedList  *next = NULL; // next node
+
+   linkedList  *lastPrev = NULL; // Previous node of the part of the linked list reversed last
+   linkedList  *currPrev = NULL; // Previous node of the current part of the linked list which is going to be reversed.
+   
+   linkedList  *resultLinkedListHead = curr;
+   
+   bool isResultHeadSet = false; // Head of the resultant reversed linked list is not yet set.
+   
+   while(NULL != curr){
+   	
+   	// Before reversing the part of linked list (i.e. k nodes), set previous node of current part of the linked list as current node.
+   	currPrev = curr; 
+   	
+   	// reversr k nodes of linked list
+   	for(int i = 0; i<=k && NULL != curr; i++){
+   		next = curr -> next;
+   		curr -> next = prev;
+   		prev = curr;
+   		curr = next;
+   	}
+   	
+   	// After reversing currrent k nodes, connect previous node of the last reversed  k nodes to 
+   	//the previous node of current k reversed nodes.
+   	if(NULL != lastPrev)  {lastPrev -> next = prev;}
+   	
+   	// Set rusult head to previous node of the 1st k reversed nodes of the linked list. This is 1 time activity.
+   	if(false == isResultHeadSet && NULL != prev ) { resultLinkedListHead = prev; isResultHeadSet = true;}
+   	
+   	prev = NULL;
+   	lastPrev = currPrev;
+   }
+   
+   return resultLinkedListHead;
+}
+
 ////////////////////////////////////////////////////////
 
 void prependNode(linkedList** head,linkedList** tail)
