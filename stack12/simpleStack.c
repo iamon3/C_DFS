@@ -2,7 +2,7 @@
 
 ////////////////////////////
 
-int stack_top = 0 ;
+int stack_top = -1 ;
 int stack_size;
 int stack[50];
 
@@ -11,10 +11,11 @@ int stack[50];
 
 int push(int elm_to_be_pushed )
 {
+  stack_top += 1;
   if( stack_top == stack_size )
     {printf(" \nOoopppsssss ... Stack is full \n") ; return -1;}
   else
-    {stack[stack_top ++ ] = elm_to_be_pushed ;return 1 ;}
+    {stack[stack_top] = elm_to_be_pushed ;return 1 ;}
 }
 
 ////////////////////////////
